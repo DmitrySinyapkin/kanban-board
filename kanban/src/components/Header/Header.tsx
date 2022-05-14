@@ -29,10 +29,9 @@ const Header: React.FC = () => {
                 </div>
                 <nav className={`header__menu ${isOpen && 'header__menu_opened'}`}>
                     <Link to={'/'}>Kanban</Link>
-                    {user.username
+                    {user.token
                         ?
                         <div className="profile">
-                            <div className="profile__username">{user.username}</div>
                             <div className="profile__logout" onClick={handleLogout}>Выйти</div>
                         </div>
                         :

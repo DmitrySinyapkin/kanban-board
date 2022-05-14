@@ -31,7 +31,6 @@ const Signup: React.FC = () => {
                 .then((res: IUser) => {
                     if (res.token) {
                         dispatch(login({
-                            username: res.username,
                             token: res.token
                         }
                         ))
