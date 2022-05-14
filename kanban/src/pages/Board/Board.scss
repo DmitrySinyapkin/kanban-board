@@ -1,0 +1,43 @@
+@mixin body-size {
+    width: 1260px;
+    margin: 20px auto;
+
+    @media (min-width: 1000px) and (max-width: 1399px) {
+        width: 940px;
+    }
+
+    @media (min-width: 768px) and (max-width: 999px) {
+        width: 620px;
+    }
+
+    @media (max-width: 767px) {
+        width: 300px;
+    }
+}
+
+.board_none {
+    @include body-size();
+    height: 100px;
+    background: #505050;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+.board {
+    @include body-size();
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}

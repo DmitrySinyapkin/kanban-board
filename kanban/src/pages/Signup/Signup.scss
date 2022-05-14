@@ -1,0 +1,53 @@
+.signup {
+    width: 1260px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #505050;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+
+    @media (min-width: 1000px) and (max-width: 1399px) {
+        width: 940px;
+    }
+
+    @media (min-width: 768px) and (max-width: 999px) {
+        width: 620px;
+    }
+
+    @media (max-width: 767px) {
+        width: 300px;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .field {
+            position: relative;
+
+            &__message {
+                position: absolute;
+                top: -16px;
+                right: 0px;
+                color: white;
+            }
+
+            .form__input {
+                width: 50%;
+                height: 30px;
+                background: #505050;
+                border: 1px solid #9fa6a6;
+                color: #9fa6a6;
+            }
+        }
+
+        .form__controls {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
