@@ -30,7 +30,7 @@ const Header: React.FC = () => {
                     <img src={burger} alt='burger' />
                 </div>
                 <nav className={`header__menu ${isOpen && 'header__menu_opened'}`}>
-                    <Link to={'/'}>Kanban</Link>
+                    <Link className="menu__kanban" to={'/'}>Kanban</Link>
                     {user.token
                         ?
                         <div className="profile">
