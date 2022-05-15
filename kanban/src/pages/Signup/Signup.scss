@@ -1,5 +1,5 @@
 .signup {
-    width: 1260px;
+    width: 620px;
     margin: 20px auto;
     padding: 10px;
     background: #505050;
@@ -8,14 +8,6 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
-
-    @media (min-width: 1000px) and (max-width: 1399px) {
-        width: 940px;
-    }
-
-    @media (min-width: 768px) and (max-width: 999px) {
-        width: 620px;
-    }
 
     @media (max-width: 767px) {
         width: 300px;
@@ -42,6 +34,11 @@
                 background: #505050;
                 border: 1px solid #9fa6a6;
                 color: #9fa6a6;
+
+                &:focus {
+                    outline: none;
+                    border-color: white;
+                }
             }
         }
 

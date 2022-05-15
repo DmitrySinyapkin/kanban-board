@@ -23,7 +23,6 @@ const Login: React.FC = () => {
         if (usernameValidation && passwordValidation) {
             loginUser(username, password)
                 .then((res: IUser) => {
-                    console.log(res)
                     if (res.token) {
                         dispatch(login({
                             token: res.token

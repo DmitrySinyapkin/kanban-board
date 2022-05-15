@@ -1,10 +1,39 @@
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { getCards } from "../../api/likeKanbanApi"
+import Category from "../../components/Category/Category"
+import { getAll } from "../../slices/cards"
 import { RootState } from "../../store"
+import { ICard} from "../../types/apiResponses"
 import './Board.scss'
 
 const Board: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user)
+    const filteredCards = [
+        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '0')),
+        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '1')),
+        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '2')),
+        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '3'))
+    ]
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        getCards().then((resp: ICard[]) => {
+            if (resp.length > 0) {
+                dispatch(getAll(resp))
+            }
+        })
+    }, [])
+
+    const rows = [
+        'ON HOLD',
+        'IN PROGRESS',
+        'NEEDS REVIEW',
+        'APPROVED'
+    ]
 
     if (!user.token) {
         return (
@@ -16,7 +45,11 @@ const Board: React.FC = () => {
     }
 
     return (
-        <div className="board"></div>
+        <div className="board">
+            <div className="board__container">
+                {rows.map((row: string, index: number) => <Category key={index} cards={filteredCards[index]} category={index.toString()} header={row} />)}
+            </div>
+        </div>
     )
 }
 

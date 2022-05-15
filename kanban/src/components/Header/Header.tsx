@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useDispatch } from "react-redux";
 import { logout } from "../../slices/user";
+import { getAll } from "../../slices/cards";
 
 const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -19,6 +20,7 @@ const Header: React.FC = () => {
 
     const handleLogout = () => {
         dispatch(logout())
+        dispatch(getAll([]))
     }
 
     return (

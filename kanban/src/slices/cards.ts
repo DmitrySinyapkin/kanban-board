@@ -22,8 +22,8 @@ const cardsSlice = createSlice({
         modifyCard: (state, action: PayloadAction<ICard>) => {
             state.cards.splice(state.cards.findIndex((card: ICard) => card.id === action.payload.id), 1, action.payload)
         },
-        removeCard: (state, action: PayloadAction<ICard>) => {
-            state.cards.splice(state.cards.findIndex((card: ICard) => card.id === action.payload.id), 1)
+        removeCard: (state, action: PayloadAction<number>) => {
+            state.cards.splice(state.cards.findIndex((card: ICard) => card.id === action.payload), 1)
         }
     }
 })

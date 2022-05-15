@@ -2,19 +2,27 @@ import { CARDS_URL, DELETE_METHOD, PATCH_METHOD, POST_METHOD, USERS_URL } from "
 import { LS_USER } from "../constants/localStorage"
 import { ICard } from "../types/apiResponses"
 
-const doGetOrDeleteRequest = async (url: string, method?: string) => {
+const doGetRequest = async (url: string) => {
     const token = JSON.parse(localStorage.getItem(LS_USER)!).token
     const options: RequestInit = {
         headers: new Headers({
             'Authorization': `JWT ${token}`
         })
     }
-    if (method) {
-        options.method = method
-    }
     const res = await fetch(url, options)
     const data = await res.json()
     return data
+}
+
+const doDeleteRequest = async (url: string) => {
+    const token = JSON.parse(localStorage.getItem(LS_USER)!).token
+    const options: RequestInit = {
+        method: DELETE_METHOD,
+        headers: new Headers({
+            'Authorization': `JWT ${token}`
+        })
+    }
+    await fetch(url, options)
 }
 
 const doRequestWithBody = async (url: string, method: string, body: BodyInit) => {
@@ -60,8 +68,16 @@ export const loginUser = (username: string, password: string) => {
     return doRequestWithBody(url, method, body)
 }
 
+export const refreshToken = () => {
+    const url = USERS_URL + 'refresh_token/'
+    const method = POST_METHOD
+    const data = localStorage.getItem(LS_USER)!
+    localStorage.removeItem(LS_USER)
+    return doRequestWithBody(url, method, data)
+}
+
 export const getCards = () => {
-    return doGetOrDeleteRequest(CARDS_URL)
+    return doGetRequest(CARDS_URL)
 }
 
 export const createCard = (row: string, text: string) => {
@@ -87,6 +103,5 @@ export const updateCard = (card: ICard) => {
 
 export const deleteCard = (id: number) => {
     const url = CARDS_URL + `${id}/`
-    const method = DELETE_METHOD
-    return doGetOrDeleteRequest(url, method)
+    return doDeleteRequest(url)
 }
