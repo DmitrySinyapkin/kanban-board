@@ -29,6 +29,8 @@ const Login: React.FC = () => {
                         }
                         ))
                         navigate('/')
+                    } else {
+                        alert('Неверный логин или пароль!')
                     }
                 })
                 .catch(err => alert('Ошибка регистрации!'))

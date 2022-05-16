@@ -26,6 +26,12 @@
                 display: none;
             }
 
+            .menu__kanban {
+                @media (max-width: 767px) {
+                    display: none;
+                }
+            }
+
             &_opened {
                 display: flex;
                 flex-direction: column;

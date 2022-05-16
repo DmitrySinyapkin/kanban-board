@@ -6,26 +6,22 @@ import { getCards } from "../../api/likeKanbanApi"
 import Category from "../../components/Category/Category"
 import { getAll } from "../../slices/cards"
 import { RootState } from "../../store"
-import { ICard} from "../../types/apiResponses"
+import { ICard } from "../../types/apiResponses"
 import './Board.scss'
 
 const Board: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user)
-    const filteredCards = [
-        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '0')),
-        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '1')),
-        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '2')),
-        useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === '3'))
-    ]
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getCards().then((resp: ICard[]) => {
-            if (resp.length > 0) {
-                dispatch(getAll(resp))
-            }
-        })
+        getCards()
+            .then((resp: ICard[]) => {
+                if (resp.length > 0) {
+                    dispatch(getAll(resp))
+                }
+            })
+            .catch(() => alert('Не получилось загрузить карточки!'))
     }, [])
 
     const rows = [
@@ -47,7 +43,7 @@ const Board: React.FC = () => {
     return (
         <div className="board">
             <div className="board__container">
-                {rows.map((row: string, index: number) => <Category key={index} cards={filteredCards[index]} category={index.toString()} header={row} />)}
+                {rows.map((row: string, index: number) => <Category key={index} category={index.toString()} header={row} />)}
             </div>
         </div>
     )

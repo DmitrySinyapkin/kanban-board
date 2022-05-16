@@ -90,13 +90,13 @@ export const createCard = (row: string, text: string) => {
     return doRequestWithBody(url, method, body)
 }
 
-export const updateCard = (card: ICard) => {
-    const url = CARDS_URL + `${card.id}/`
+export const updateCard = (id: number , cardData: ICard) => {
+    const url = CARDS_URL + `${id}/`
     const method = PATCH_METHOD
     const body = JSON.stringify({
-        row: card.row,
-        seq_num: card.seq_num,
-        text: card.text
+        row: cardData.row,
+        seq_num: cardData.seq_num,
+        text: cardData.text
     })
     return doRequestWithBody(url, method, body)
 }
