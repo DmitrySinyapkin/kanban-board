@@ -21,6 +21,7 @@ const Card: React.FC<{ card: ICard }> = ({ card }) => {
     const handleClick = () => {
         deleteCard(card.id!)
             .then(() => dispatch(removeCard(card.id!)))
+            .catch(() => alert('Ошибка удаления карточки!'))
     }
 
     return (

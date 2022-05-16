@@ -6,7 +6,7 @@ import { getCards } from "../../api/likeKanbanApi"
 import Category from "../../components/Category/Category"
 import { getAll } from "../../slices/cards"
 import { RootState } from "../../store"
-import { ICard} from "../../types/apiResponses"
+import { ICard } from "../../types/apiResponses"
 import './Board.scss'
 
 const Board: React.FC = () => {
@@ -15,11 +15,13 @@ const Board: React.FC = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getCards().then((resp: ICard[]) => {
-            if (resp.length > 0) {
-                dispatch(getAll(resp))
-            }
-        })
+        getCards()
+            .then((resp: ICard[]) => {
+                if (resp.length > 0) {
+                    dispatch(getAll(resp))
+                }
+            })
+            .catch(() => alert('Не получилось загрузить карточки!'))
     }, [])
 
     const rows = [

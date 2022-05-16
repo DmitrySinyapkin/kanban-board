@@ -33,8 +33,11 @@ const Category: React.FC<{ category: string, header: string }> = ({ category, he
                 .then((resp: ICard) => {
                     if (resp.id) {
                         dispatch(modifyCard(resp))
+                    } else {
+                        alert('Ошибка обновления карточки!')
                     }
                 })
+                .catch(() => alert('Ошибка обновления карточки!'))
         }
     }))
 
