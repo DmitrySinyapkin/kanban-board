@@ -1,16 +1,18 @@
 import { useState } from "react"
 import { useDrop } from "react-dnd"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { createCard, updateCard } from "../../api/likeKanbanApi"
 import { addCard, modifyCard } from "../../slices/cards"
+import { RootState } from "../../store"
 import { ICard } from "../../types/apiResponses"
 import Card from "../Card/Card"
 import './Category.scss'
 
-const Category: React.FC<{ cards: ICard[], category: string, header: string }> = ({ cards, category, header }) => {
+const Category: React.FC<{ category: string, header: string }> = ({ category, header }) => {
     const [isCreatorOpen, setIsCreatorOpen] = useState(false)
     const [newText, setNewText] = useState('')
 
+    const cards = useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === category))
     const dispatch = useDispatch()
 
     const [{ handlerId }, drop] = useDrop(() => ({
@@ -19,7 +21,7 @@ const Category: React.FC<{ cards: ICard[], category: string, header: string }> =
             handlerId: monitor.getHandlerId(),
         }),
         drop: (item: ICard) => {
-            updateCard(item.id!, { row: category, seq_num: item.seq_num, text: item.text })
+            updateCard(item.id!, { row: category, seq_num: cards.length + 1, text: item.text })
                 .then((resp: ICard) => {
                     if (resp.id) {
                         dispatch(modifyCard(resp))
