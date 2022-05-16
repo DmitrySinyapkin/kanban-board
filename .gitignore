@@ -1,2 +1,5 @@
 kanban/node_modules
 kanban/.gitignore
+kanban/build
+kanban/.firebaserc
+kanban/firebase.json
