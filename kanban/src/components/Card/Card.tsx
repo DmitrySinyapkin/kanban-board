@@ -8,14 +8,15 @@ import './Card.scss'
 const Card: React.FC<{ card: ICard }> = ({ card }) => {
     const dispatch = useDispatch()
 
-    const [collect, drag, dragPreview] = useDrag(() => ({
+    const [{ isDragging }, drag] = useDrag(() => ({
         type: 'card',
         item: card,
-        end: (item, monitor) => {
-            const dropResult = monitor.getDropResult()
-            console.log(dropResult)
-        }
+        collect: (monitor: any) => ({
+            isDragging: monitor.isDragging()
+        })
     }))
+
+    const opacity = isDragging ? 0 : 1
 
     const handleClick = () => {
         deleteCard(card.id!)
@@ -23,7 +24,7 @@ const Card: React.FC<{ card: ICard }> = ({ card }) => {
     }
 
     return (
-        <div className="card" ref={drag}>
+        <div className="card" ref={drag} style={{opacity}}>
             <div className="card__top">
                 <button className="card__button" onClick={handleClick}>X</button>
             </div>

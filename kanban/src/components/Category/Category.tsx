@@ -13,8 +13,11 @@ const Category: React.FC<{ cards: ICard[], category: string, header: string }> =
 
     const dispatch = useDispatch()
 
-    const [collectedProps, drop] = useDrop(() => ({
+    const [{ handlerId }, drop] = useDrop(() => ({
         accept: 'card',
+        collect: (monitor: any) => ({
+            handlerId: monitor.getHandlerId(),
+        }),
         drop: (item: ICard) => {
             updateCard(item.id!, { row: category, seq_num: item.seq_num, text: item.text })
                 .then((resp: ICard) => {
@@ -22,9 +25,6 @@ const Category: React.FC<{ cards: ICard[], category: string, header: string }> =
                         dispatch(modifyCard(resp))
                     }
                 })
-        },
-        hover: (item) => {
-
         }
     }))
 
