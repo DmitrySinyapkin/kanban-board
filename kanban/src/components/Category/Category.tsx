@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { useDrop } from "react-dnd"
 import { useDispatch, useSelector } from "react-redux"
 import { createCard, updateCard } from "../../api/likeKanbanApi"
@@ -12,8 +12,16 @@ const Category: React.FC<{ category: string, header: string }> = ({ category, he
     const [isCreatorOpen, setIsCreatorOpen] = useState(false)
     const [newText, setNewText] = useState('')
 
-    const cards = useSelector((state: RootState) => state.cards.cards.filter((card: ICard) => card.row === category))
+    const cards = useSelector((state: RootState) => state.cards.cards
+        .filter((card: ICard) => card.row === category)
+        .sort((a: ICard,b: ICard) => a.seq_num! - b.seq_num!))
     const dispatch = useDispatch()
+
+    const total = useRef(0)
+
+    useLayoutEffect(() => {
+        total.current = cards.length
+    }, [cards])
 
     const [{ handlerId }, drop] = useDrop(() => ({
         accept: 'card',
@@ -21,7 +29,7 @@ const Category: React.FC<{ category: string, header: string }> = ({ category, he
             handlerId: monitor.getHandlerId(),
         }),
         drop: (item: ICard) => {
-            updateCard(item.id!, { row: category, seq_num: cards.length + 1, text: item.text })
+            updateCard(item.id!, { row: category, seq_num: total.current, text: item.text })
                 .then((resp: ICard) => {
                     if (resp.id) {
                         dispatch(modifyCard(resp))
