@@ -15,13 +15,15 @@ const Board: React.FC = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getCards()
-            .then((resp: ICard[]) => {
-                if (resp.length > 0) {
-                    dispatch(getAll(resp))
-                }
-            })
-            .catch(() => alert('Не получилось загрузить карточки!'))
+        if (user.token) {
+            getCards()
+                .then((resp: ICard[]) => {
+                    if (resp.length > 0) {
+                        dispatch(getAll(resp))
+                    }
+                })
+                .catch(() => alert('Не получилось загрузить карточки!'))
+        }
     }, [])
 
     const rows = [
