@@ -1,7 +1,8 @@
 import { useState } from "react"
+import { useDrop } from "react-dnd"
 import { useDispatch } from "react-redux"
-import { createCard } from "../../api/likeKanbanApi"
-import { addCard } from "../../slices/cards"
+import { createCard, updateCard } from "../../api/likeKanbanApi"
+import { addCard, modifyCard } from "../../slices/cards"
 import { ICard } from "../../types/apiResponses"
 import Card from "../Card/Card"
 import './Category.scss'
@@ -11,6 +12,21 @@ const Category: React.FC<{ cards: ICard[], category: string, header: string }> =
     const [newText, setNewText] = useState('')
 
     const dispatch = useDispatch()
+
+    const [collectedProps, drop] = useDrop(() => ({
+        accept: 'card',
+        drop: (item: ICard) => {
+            updateCard(item.id!, { row: category, seq_num: item.seq_num, text: item.text })
+                .then((resp: ICard) => {
+                    if (resp.id) {
+                        dispatch(modifyCard(resp))
+                    }
+                })
+        },
+        hover: (item) => {
+
+        }
+    }))
 
     const handleAddClick = () => {
         if (newText) {
@@ -31,7 +47,7 @@ const Category: React.FC<{ cards: ICard[], category: string, header: string }> =
     }
 
     return (
-        <div className="category">
+        <div className="category" ref={drop}>
             <div className={`category__header category__header_${category}`}><span>{header}</span> <span>{`(${cards.length})`}</span></div>
             <div className="category__container">
                 {cards.map((card: ICard) => <Card key={card.id} card={card} />)}
