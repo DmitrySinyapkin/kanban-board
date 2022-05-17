@@ -2,11 +2,10 @@ import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { getCards } from "../../api/likeKanbanApi"
+import { getCards, refreshToken } from "../../api/likeKanbanApi"
 import Category from "../../components/Category/Category"
 import { getAll } from "../../slices/cards"
 import { RootState } from "../../store"
-import { ICard } from "../../types/apiResponses"
 import './Board.scss'
 
 const Board: React.FC = () => {
@@ -14,16 +13,22 @@ const Board: React.FC = () => {
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
+    const handleFirstLoading = () => {
         if (user.token) {
             getCards()
-                .then((resp: ICard[]) => {
+                .then((resp: any)=> {
                     if (resp.length > 0) {
                         dispatch(getAll(resp))
+                    } else if (resp.detail === 'Signature has expired.') {
+                        refreshToken().then(() => handleFirstLoading())
                     }
                 })
                 .catch(() => alert('Не получилось загрузить карточки!'))
         }
+    }
+
+    useEffect(() => {
+        handleFirstLoading()
     }, [])
 
     const rows = [
