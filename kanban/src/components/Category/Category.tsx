@@ -14,13 +14,16 @@ const Category: React.FC<{ category: string, header: string }> = ({ category, he
 
     const cards = useSelector((state: RootState) => state.cards.cards
         .filter((card: ICard) => card.row === category)
-        .sort((a: ICard,b: ICard) => a.seq_num! - b.seq_num!))
+        .sort((a: ICard, b: ICard) => a.seq_num! - b.seq_num!))
+    const allCards = useSelector((state: RootState) => state.cards.cards)
     const dispatch = useDispatch()
 
     const total = useRef(0)
+    const cardsRef = useRef<ICard[] | []>([])
 
     useLayoutEffect(() => {
         total.current = cards.length
+        cardsRef.current = allCards
     }, [cards])
 
     const [{ handlerId }, drop] = useDrop(() => ({
@@ -38,6 +41,13 @@ const Category: React.FC<{ category: string, header: string }> = ({ category, he
                     }
                 })
                 .catch(() => alert('Ошибка обновления карточки!'))
+
+            cardsRef.current
+                .filter((card: ICard) => card.row === item.row && card.seq_num! > item.seq_num!)
+                .forEach((card: ICard) => {
+                    updateCard(card.id!, { row: card.row, text: card.text, seq_num: card.seq_num! - 1 })
+                        .then((resp: ICard) => dispatch(modifyCard(resp)))
+                })
         }
     }))
 
